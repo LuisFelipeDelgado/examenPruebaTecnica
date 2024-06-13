@@ -89,3 +89,18 @@ FROM prestamos
 WHERE fecha_otorgamiento >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR);
 
 -- Séptima consulta
+SELECT 
+    clientes.nombre, 
+    SUM(prestamos.monto) AS monto_total_prestamos 
+FROM 
+    prestamos 
+JOIN 
+    clientes ON prestamos.id_cliente = clientes.id_cliente 
+WHERE 
+    MONTH(prestamos.fecha_otorgamiento) BETWEEN 1 AND 4 
+    AND YEAR(prestamos.fecha_otorgamiento) = YEAR(CURDATE())
+GROUP BY 
+    clientes.nombre 
+ORDER BY 
+    monto_total_prestamos DESC 
+LIMIT 10;
